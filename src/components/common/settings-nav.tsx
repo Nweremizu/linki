@@ -6,29 +6,23 @@ import Link from "next/link";
 import { useParams, useSelectedLayoutSegment } from "next/navigation";
 import { ReactNode } from "react";
 
-export default function NavLink({
-  segment,
-  icon: Icon,
-  children,
-}: {
+interface NavLinkProps {
   segment: string | null;
-  icon: any;
+  icon: ReactNode; // Update type to ReactNode
   children: ReactNode;
-}) {
-  const selectedLayoutSegment = useSelectedLayoutSegment();
-  const { slug } = useParams() as {
-    slug?: string;
-  };
+}
 
-  const href = `${slug ? `/${slug}` : "/account"}/settings${
+const NavLink: React.FC<NavLinkProps> = ({ segment, icon, children }) => {
+  const selectedLayoutSegment = useSelectedLayoutSegment();
+  const { slug } = useParams() as { slug?: string };
+
+  const href = `${slug ? `/app/${slug}` : "/account"}/settings${
     segment ? `/${segment}` : ""
   }`;
-
   const isSelected = selectedLayoutSegment === segment;
 
   return (
     <Link
-      key={href}
       href={href}
       className={cn(
         "flex items-center gap-2.5 whitespace-nowrap rounded-lg p-2 text-sm text-gray-950 outline-none transition-all duration-75",
@@ -36,16 +30,12 @@ export default function NavLink({
         isSelected
           ? "bg-gray-950/5"
           : "hover:bg-gray-950/5 active:bg-gray-950/10"
-      )}>
-      {Icon && (
-        <Icon
-          className={cn(
-            "h-4 w-4 shrink-0",
-            isSelected ? "text-gray-950" : "text-gray-700"
-          )}
-        />
       )}
+    >
+      {icon && icon} {/* Render the icon directly */}
       {children}
     </Link>
   );
-}
+};
+
+export default NavLink;

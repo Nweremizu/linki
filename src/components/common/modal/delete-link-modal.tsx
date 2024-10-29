@@ -1,7 +1,12 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogOverlay } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogOverlay,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Logo } from "@/components/ui/icons/logo";
 import { useDeleteLink } from "@/lib/query/links/use-link";
 import { linkConstructor } from "@/lib/utils/link-constructor";
@@ -14,6 +19,7 @@ import {
   useState,
 } from "react";
 import { toast } from "sonner";
+import HideCom from "../visually-hide-component";
 
 function DeleteLinkModalHelper({
   link,
@@ -62,11 +68,16 @@ function DeleteLinkModalHelper({
     <Dialog
       open={showDeleteLinkModal}
       onOpenChange={setShowDeleteLinkModal}
-      key={"delete-link"}>
+      key={"delete-link"}
+    >
       <DialogOverlay className="fixed inset-0 bg-gray-100 backdrop-blur-lg bg-opacity-10" />
       <DialogContent
         onClick={(e) => e.stopPropagation()}
-        className="bg-white !p-0">
+        className="bg-white !p-0"
+      >
+        <HideCom>
+          <DialogTitle>Delete link modal</DialogTitle>
+        </HideCom>
         <div className="flex flex-col items-center justify-center space-y-3  px-4 py-4 pt-8 sm:px-16">
           <Logo className="size-8" />
           <h3 className="text-lg font-medium">Delete link</h3>
@@ -78,7 +89,8 @@ function DeleteLinkModalHelper({
         </div>
         <form
           className="flex flex-col space-y-3 bg-gray-50 px-4 py-8 text-left sm:px-16 rounded-b-md border border-gray-200"
-          onSubmit={handleDeleteLink}>
+          onSubmit={handleDeleteLink}
+        >
           <div>
             <label htmlFor="workspace-shortLink" className="flex items-center">
               <p className="block text-sm font-medium text-gray-700">

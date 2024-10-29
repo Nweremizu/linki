@@ -8,6 +8,7 @@ import {
   DialogContent,
   DialogTrigger,
   DialogOverlay,
+  DialogTitle,
 } from "@/components/ui/dialog";
 import { Logo } from "@/components/ui/icons/logo";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
@@ -51,6 +52,7 @@ import { linkConstructor } from "@/lib/utils/link-constructor";
 import { truncate } from "@/lib/utils/truncate";
 import { useCreateLink, useUpdateLink } from "@/lib/query/links/use-link";
 import { generateRandomLinkKey } from "@/lib/query/links/use-links";
+import HideCom from "../../visually-hide-component";
 
 function AddEditLinkModal({
   showAddEditLinkModal,
@@ -235,17 +237,22 @@ function AddEditLinkModal({
       <DialogOverlay className="fixed inset-0 z-40 bg-gray-100 bg-opacity-10 backdrop-blur" />
 
       <DialogContent className="bg-gray-50 !p-0">
+        <HideCom>
+          <DialogTitle>Edit link modal</DialogTitle>
+        </HideCom>
         <div className="scrollbar-hide grid relative max-h-[95dvh] w-full divide-x divide-gray-100 overflow-auto md:grid-cols-1 md:overflow-hidden rounded-md">
           <button
             onClick={() => {
               setShowAddEditLinkModal(false);
             }}
-            className="group absolute right-0 top-0 z-30 m-3 hidden rounded-full p-2 text-gray-500 transition-all duration-75 hover:bg-gray-100 focus:outline-none active:bg-gray-200 md:block">
+            className="group absolute right-0 top-0 z-30 m-3 hidden rounded-full p-2 text-gray-500 transition-all duration-75 hover:bg-gray-100 focus:outline-none active:bg-gray-200 md:block"
+          >
             <X className="h-5 w-5" />
           </button>
           <div
             className="scrollbar-hide rounded-l-2xl md:max-h-[95vh] md:overflow-auto"
-            onScroll={handleScroll}>
+            onScroll={handleScroll}
+          >
             <div className="sticky top-0 z-20 flex h-14 items-center justify-center gap-4 space-y-3 border-b border-gray-200 bg-white px-4 transition-all sm:h-24 md:px-16">
               <LinkLogo apexDomain={getPrettyUrl(debouncedUrl)} />
               <h3 className="!mt-0 max-w-sm truncate text-lg font-medium">
@@ -265,7 +272,8 @@ function AddEditLinkModal({
                     <div className="flex items-center space-x-2">
                       <label
                         htmlFor={`url-${randomIdx}`}
-                        className="block text-sm font-medium text-gray-700">
+                        className="block text-sm font-medium text-gray-700"
+                      >
                         Destination URL
                       </label>
                       {/* <TooltipProvider delayDuration={100}> */}
@@ -307,7 +315,8 @@ function AddEditLinkModal({
                       <div className="flex items-center space-x-2">
                         <label
                           htmlFor={`key-${randomIdx}`}
-                          className="block text-sm font-medium text-gray-700">
+                          className="block text-sm font-medium text-gray-700"
+                        >
                           Short Link
                         </label>
                       </div>
@@ -318,7 +327,8 @@ function AddEditLinkModal({
                               type="button"
                               onClick={generateRandomKey}
                               aria-disabled={generatingRandomKey}
-                              className="flex h-6 items-center space-x-2 text-sm text-gray-500 transition-all duration-75 hover:text-black active:scale-95">
+                              className="flex h-6 items-center space-x-2 text-sm text-gray-500 transition-all duration-75 hover:text-black active:scale-95"
+                            >
                               {generatingRandomKey ? (
                                 <LoadingCircle className="h-3 w-3" />
                               ) : (
@@ -335,7 +345,8 @@ function AddEditLinkModal({
                               window.confirm(
                                 "Editing an existing short link could potentially break existing links. Are you sure you want to continue?"
                               ) && setLockKey(false);
-                            }}>
+                            }}
+                          >
                             <Lock className="h-3 w-3" />
                           </button>
                         )}
@@ -347,7 +358,8 @@ function AddEditLinkModal({
                           className={cn(
                             "max-w-[12rem] py-2 !rounded-l-md border border-r-0 border-gray-300 bg-gray-50 pl-4 pr-8 text-gray-500 focus:border-gray-300 focus:outline-none focus:ring-0 sm:text-sm",
                             prevLinkData && lockKey && "cursor-not-allowed"
-                          )}>
+                          )}
+                        >
                           {`app.${process.env.NEXT_PUBLIC_APP_DOMAIN}`}
                         </div>
                       </div>
@@ -396,7 +408,8 @@ function AddEditLinkModal({
               <div className="relative pb-3 pt-5 w-full">
                 <div
                   className="absolute inset-0 flex w-full items-center px-4 md:px-16"
-                  aria-hidden="true">
+                  aria-hidden="true"
+                >
                   <div className="w-full border-t border-gray-300" />
                 </div>
                 <div className="relative flex justify-center">
@@ -431,7 +444,8 @@ function AddEditLinkModal({
                   atBottom
                     ? ""
                     : "md:shadow-[0_-20px_30px_-10px_rgba(0,0,0,0.1)]"
-                } z-10 bg-gray-50 px-4 py-8 transition-all md:sticky md:bottom-0 md:px-16`}>
+                } z-10 bg-gray-50 px-4 py-8 transition-all md:sticky md:bottom-0 md:px-16`}
+              >
                 <Button disabled={saveDisabled} loading={saving}>
                   {prevLinkData ? "Save changes" : "Create link"}
                 </Button>

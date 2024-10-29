@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogTrigger,
   DialogOverlay,
+  DialogTitle,
 } from "@/components/ui/dialog";
 import { Logo } from "@/components/ui/icons/logo";
 import { useRouter } from "next/navigation";
@@ -25,6 +26,7 @@ import { useSession } from "next-auth/react";
 import AlertCircleFill from "@/components/ui/icons/alert-circle-fill";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
+import HideCom from "../visually-hide-component";
 
 function AddWorkspaceModalHelper({
   showAddWorkspaceModal,
@@ -117,21 +119,26 @@ function AddWorkspaceModalHelper({
   return (
     <Dialog
       open={showAddWorkspaceModal}
-      onOpenChange={setShowAddWorkspaceModal}>
+      onOpenChange={setShowAddWorkspaceModal}
+    >
       <DialogOverlay className="fixed inset-0 z-40 bg-gray-100 bg-opacity-10 backdrop-blur" />
       {trigger && <DialogTrigger>{trigger}</DialogTrigger>}
       <DialogContent className="bg-white">
+        <HideCom>
+          <DialogTitle>Add Workspace modal</DialogTitle>
+        </HideCom>
         <div className="flex flex-col items-center justify-center space-y-3 border-b border-gray-200 px-4 py-4 pt-8 sm:px-16">
           <Logo className="size-4" />
           <h3 className="text-lg font-medium">Create a new workspace</h3>
           <a
             href=""
             target="_blank"
-            className="-translate-y-2 text-center text-xs text-gray-500 underline underline-offset-4 hover:text-gray-800">
+            className="-translate-y-2 text-center text-xs text-gray-500 underline underline-offset-4 hover:text-gray-800"
+          >
             What is a workspace?
           </a>
         </div>
-        <form className="space-y-2" onSubmit={handleSubmit}>
+        <form className="space-y-2 " onSubmit={handleSubmit}>
           <div>
             <label htmlFor="name" className="flex items-center space-x-2">
               <p className="block text-sm font-medium text-gray-700">

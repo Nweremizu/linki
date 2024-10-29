@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { LoadingSpinner } from "./icons";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex disabled:h-10 items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
@@ -48,15 +48,16 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <Comp
         className={cn(
-          "group flex h-12 w-full items-center justify-center gap-2 whitespace-nowrap rounded-md border px-4 text-sm",
+          "group flex h-10 w-full items-center justify-center gap-2 whitespace-nowrap rounded-md border px-4 text-sm",
           props.disabled || loading
             ? "cursor-not-allowed border-gray-200 bg-gray-100 text-gray-400"
             : buttonVariants({ variant, size, className })
         )}
         ref={ref}
         disabled={props.disabled || loading}
-        {...props}>
-        {loading ? <LoadingSpinner className="size-4" /> : null}
+        {...props}
+      >
+        {loading ? <LoadingSpinner className="size-3" /> : null}
         {props.children}
       </Comp>
     );

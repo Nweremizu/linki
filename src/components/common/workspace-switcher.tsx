@@ -10,10 +10,12 @@ import { useMemo, useState } from "react";
 import { BlurImage } from "../ui/blur-image";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { useAddWorkspaceModal } from "./modal/add-workspace-modal";
+import { useUser } from "@/lib/query/user/useUser";
 
 export default function WorkspaceSwitcher() {
   const { slug } = useParams() as { slug?: string };
   const { data: session } = useSession();
+  const { data: user } = useUser();
   const { data: workspaces } = useWorkspaces(session?.user?.id as string);
   const [openPopover, setOpenPopover] = useState(false);
   const { setShowAddWorkspaceModal, AddWorkspaceModal } = useAddWorkspaceModal({
@@ -28,7 +30,7 @@ export default function WorkspaceSwitcher() {
     if (!slug || !workspaces || !selectedWorkspace) {
       return {
         id: "new",
-        name: session?.user?.name || session?.user?.email || "Unknown",
+        name: (user?.name as string) || (user?.email as string),
         logo: "",
         slug: "/",
         plan: "free",
@@ -36,9 +38,9 @@ export default function WorkspaceSwitcher() {
     }
 
     return selectedWorkspace.project;
-  }, [slug, workspaces, session]);
+  }, [slug, workspaces, user]);
 
-  if (!workspaces || status === "loading") {
+  if (!workspaces) {
     return <WorkspaceSwitcherPlaceholder />;
   }
 
@@ -64,11 +66,10 @@ export default function WorkspaceSwitcher() {
                 </AvatarFallback>
               </Avatar>
             )}
-            <div className={` items-center space-x-3 sm:flex`}>
+            <div className="items-center space-x-3 sm:flex">
               <span className="inline-block max-w-[100px] truncate text-sm font-medium sm:max-w-[200px] capitalize">
                 {selected.name}
               </span>
-              {/* {selected.slug !== "/" && <PlanBadge plan={selected.plan} />} */}
             </div>
           </div>
           <ChevronsUpDown
@@ -110,27 +111,11 @@ function WorkspaceList({
     name: string;
     slug: string;
     logo?: string | undefined;
-    createdAt?: Date;
-    updatedAt?: Date;
-    usageLastChecked?: Date;
   };
   setShowAddWorkspaceModal: (show: boolean) => void;
   workspaces: Workspace[];
   setOpenPopover: (open: boolean) => void;
 }) {
-  // const href = useCallbac(
-  //   (slug: string) => {
-  //     if (domain || key || selected.slug === "/") {
-  //       // if we're on a link page, navigate back to the workspace root
-  //       return `/${slug}`;
-  //     } else {
-  //       // else, we keep the path but remove all query params
-  //       return pathname?.replace(selected.slug, slug).split("?")[0] || "/";
-  //     }
-  //   },
-  //   [domain, key, pathname, selected.slug]
-  // );
-
   return (
     <div className="p-2">
       <div className="flex items-center justify-between px-2 pb-1">
@@ -139,52 +124,53 @@ function WorkspaceList({
           <Link
             href="/app/workspaces"
             onClick={() => setOpenPopover(false)}
-            className="rounded-md border border-gray-200 px-2 py-1 text-xs transition-colors hover:bg-gray-100">
+            className="rounded-md border border-gray-200 px-2 py-1 text-xs transition-colors hover:bg-gray-100"
+          >
             View All
           </Link>
         )}
       </div>
-      {workspaces.map((workspace) => {
-        return (
-          <Link
-            key={workspace?.project?.slug}
-            className={`relative flex w-full items-center space-x-2 rounded-md px-2 py-1.5 hover:bg-gray-100 active:bg-gray-200 ${
-              selected.slug === workspace?.project?.slug ? "font-medium" : ""
-            } transition-all duration-75`}
-            href={`/app/${workspace?.project?.slug}`}
-            shallow={false}
-            onClick={() => setOpenPopover(false)}>
-            {workspace?.project?.logo ? (
-              <BlurImage
-                src={workspace?.project?.logo || ``}
-                width={20}
-                height={20}
-                alt={workspace?.project?.id}
-                className="h-7 w-7 shrink-0 overflow-hidden rounded-full"
-              />
-            ) : (
-              <Avatar>
-                <AvatarFallback className="capitalize text-lg">
-                  {workspace?.project?.name[0]}
-                </AvatarFallback>
-              </Avatar>
-            )}
-            <span
-              className={`block truncate text-sm sm:max-w-[140px] capitalize ${
-                selected.slug === workspace?.project?.slug
-                  ? "font-medium"
-                  : "font-normal"
-              }`}>
-              {workspace?.project?.name}
+      {workspaces.map((workspace) => (
+        <Link
+          key={workspace?.project?.slug}
+          className={`relative flex w-full items-center space-x-2 rounded-md px-2 py-1.5 hover:bg-gray-100 active:bg-gray-200 ${
+            selected.slug === workspace?.project?.slug ? "font-medium" : ""
+          } transition-all duration-75`}
+          href={`/app/${workspace?.project?.slug}`}
+          shallow={false}
+          onClick={() => setOpenPopover(false)}
+        >
+          {workspace?.project?.logo ? (
+            <BlurImage
+              src={workspace?.project?.logo || ""}
+              width={20}
+              height={20}
+              alt={workspace?.project?.id}
+              className="h-7 w-7 shrink-0 overflow-hidden rounded-full"
+            />
+          ) : (
+            <Avatar>
+              <AvatarFallback className="capitalize text-lg">
+                {workspace?.project?.name[0]}
+              </AvatarFallback>
+            </Avatar>
+          )}
+          <span
+            className={`block truncate text-sm sm:max-w-[140px] capitalize ${
+              selected.slug === workspace?.project?.slug
+                ? "font-medium"
+                : "font-normal"
+            }`}
+          >
+            {workspace?.project?.name}
+          </span>
+          {selected.slug === workspace?.project?.slug && (
+            <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-black">
+              <Check className="h-5 w-5" aria-hidden="true" />
             </span>
-            {selected.slug === workspace?.project?.slug ? (
-              <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-black">
-                <Check className="h-5 w-5" aria-hidden="true" />
-              </span>
-            ) : null}
-          </Link>
-        );
-      })}
+          )}
+        </Link>
+      ))}
 
       <button
         key="add"
@@ -192,7 +178,8 @@ function WorkspaceList({
           setShowAddWorkspaceModal(true);
           setOpenPopover(false);
         }}
-        className="flex w-full cursor-pointer items-center space-x-2 rounded-md p-2 transition-all duration-75 hover:bg-gray-100">
+        className="flex w-full cursor-pointer items-center space-x-2 rounded-md p-2 transition-all duration-75 hover:bg-gray-100"
+      >
         <PlusCircle className="h-6 w-6 text-gray-500" />
         <span className="block truncate">Add a new workspace</span>
       </button>

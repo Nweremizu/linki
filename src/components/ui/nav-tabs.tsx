@@ -29,10 +29,13 @@ export default function NavTabs() {
       className={cn(
         "scrollbar-hide relative flex gap-x-2 overflow-x-auto transition-all",
         scrolled && "sm:translate-x-9"
-      )}>
+      )}
+    >
       {tabs.map(({ name, href }) => {
         const isActive =
-          href === `/${slug}` ? pathname === href : pathname.startsWith(href);
+          href === `/app/${slug}`
+            ? pathname === href
+            : pathname.startsWith(href);
 
         return (
           <Link key={href} href={href} className="relative">
@@ -45,7 +48,8 @@ export default function NavTabs() {
                 transition={{
                   duration: 0.25,
                 }}
-                className="absolute bottom-0 w-full px-1.5">
+                className="absolute bottom-0 w-full px-1.5"
+              >
                 <div className="h-0.5 bg-black" />
               </motion.div>
             )}

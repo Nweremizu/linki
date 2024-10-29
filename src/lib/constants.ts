@@ -27,3 +27,5 @@ export const DEFAULT_LINK_PROPS: any = {
   clicks: 0,
   userId: "",
 };
+
+export const PAGINATION_LIMIT = 100;
