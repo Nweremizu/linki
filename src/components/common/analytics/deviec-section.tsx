@@ -14,7 +14,6 @@ import {
 import BrowserIcon from "@/components/ui/browser-icon";
 import DeviceIcon, { OsIcon } from "@/components/ui/device-icon";
 import ChartBarlist from "./chart-bar";
-import { BlurImage } from "@/components/ui/blur-image";
 
 export default function DeviceSection() {
   const tabs = [

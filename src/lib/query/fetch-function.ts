@@ -7,7 +7,7 @@ export const fetchTinyBirdData = async (workspaceId: string) => {
 
   const response = await fetch(url, {
     headers: {
-      Authorization: process.env.TINYBIRD_API_KEY,
+      Authorization: process.env.TINYBIRD_API_KEY as string,
     },
   });
 
@@ -26,7 +26,7 @@ export const fetchTinyBirdCountriesData = async (workspaceId: string) => {
 
   const response = await fetch(url, {
     headers: {
-      Authorization: process.env.TINYBIRD_API_COUNTRIES_KEY,
+      Authorization: process.env.TINYBIRD_API_COUNTRIES_KEY as string,
     },
   });
 

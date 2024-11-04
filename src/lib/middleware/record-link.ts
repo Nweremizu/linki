@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { geolocation, ipAddress } from "@vercel/functions";
 import { LOCALHOST_GEO_DATA, LOCALHOST_IP } from "../constants/localhost";
 import { userAgent } from "next/server";
@@ -19,6 +20,7 @@ const buildClickData = async ({
   workspace_id: string;
 }) => {
   const isProduction = process.env.VERCEL === "1";
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const searchParams = new URL(req.url).searchParams;
 
   const ip = isProduction ? ipAddress(req) : LOCALHOST_IP;
@@ -83,7 +85,7 @@ const sendClickData = async (clickData: any) => {
 
     // Try parsing as JSON only if the response was OK
     return JSON.parse(responseText);
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error sending click data:", error.message);
     console.error("Stack trace:", error.stack);
     throw error; // Re-throw the error for higher-level handling if needed
