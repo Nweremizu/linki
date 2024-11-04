@@ -47,6 +47,7 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+    --color-chart: #6c5dd3;
   }
   .dark {
     --background: 240 10% 3.9%;
@@ -73,6 +74,7 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+    --color-chart: #6c5dd3;
   }
 }
 
@@ -84,7 +86,6 @@
     @apply bg-background text-foreground;
   }
 }
-
 
 @keyframes shimmer {
   0% {

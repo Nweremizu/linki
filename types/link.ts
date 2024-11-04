@@ -48,3 +48,30 @@ export const tagColors = [
   "pink",
   "brown",
 ] as const;
+
+export interface ClickData {
+  clicks: number;
+  click_id: string;
+  link_id: string;
+  timestamp: string;
+  city: string;
+  device: string;
+  ip: string;
+  url: string;
+}
+
+export interface CountryClickData {
+  clicks: number;
+  country: string;
+}
+
+export interface CityClickData {
+  clicks: number;
+  city: string;
+  country: string;
+}
+
+export interface ContintentClickData {
+  clicks: number;
+  continent: string;
+}

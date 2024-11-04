@@ -2,6 +2,8 @@ import { ReactNode } from "react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { HelpCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { nFormatter } from "@/lib/utils/nformatter";
+import { timeAgo } from "@/lib/utils/time-ago";
 
 export function NormalTooltip({
   children,
@@ -21,7 +23,8 @@ export function NormalTooltip({
           className={cn(
             "max-w-xs px-4 py-2 text-center text-sm text-gray-700",
             className
-          )}>
+          )}
+        >
           {content}
         </div>
       </TooltipContent>
@@ -38,6 +41,42 @@ export function InfoTooltip({ content }: { content: string }) {
       <TooltipContent className="bg-white border-gray-200 shadow-lg">
         <div className="max-w-xs px-4 py-2 text-center text-sm  text-gray-700">
           {content}
+        </div>
+      </TooltipContent>
+    </Tooltip>
+  );
+}
+
+export function NumberTooltip({
+  value,
+  unit = "total clicks",
+  prefix,
+  children,
+  lastClicked,
+}: {
+  value?: number | null;
+  unit?: string;
+  prefix?: string;
+  children: ReactNode;
+  lastClicked?: Date | null;
+}) {
+  if ((!value || value < 1000) && !lastClicked) {
+    return children;
+  }
+  return (
+    <Tooltip>
+      <TooltipTrigger>{children}</TooltipTrigger>
+      <TooltipContent>
+        <div className="block max-w-xs px-4 py-2 text-center text-sm text-gray-700">
+          <p className="text-sm font-semibold text-gray-700">
+            {prefix}
+            {nFormatter(value || 0, { full: true })} {unit}
+          </p>
+          {lastClicked && (
+            <p className="mt-1 text-xs text-gray-500" suppressHydrationWarning>
+              Last clicked {timeAgo(lastClicked, { withAgo: true })}
+            </p>
+          )}
         </div>
       </TooltipContent>
     </Tooltip>

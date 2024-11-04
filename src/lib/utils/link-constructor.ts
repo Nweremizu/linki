@@ -9,9 +9,11 @@ export function linkConstructor({
   pretty?: boolean;
   searchParams?: Record<string, string>;
 }) {
-  let url = `https://${punycode(process.env.NEXT_PUBLIC_APP_DOMAIN)}${
-    key && key !== "_root" ? `/${punycode(key)}` : ""
-  }`;
+  let url = `${
+    process.env.NODE_ENV === "development"
+      ? "http://linki.localhost:3000"
+      : `https://${punycode(process.env.NEXT_PUBLIC_APP_DOMAIN)}`
+  }${key && key !== "_root" ? `/${punycode(key)}` : ""}`;
 
   if (searchParams) {
     const search = new URLSearchParams();

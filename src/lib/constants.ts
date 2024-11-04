@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const HOME_DOMAIN = `https://${process.env.NEXT_PUBLIC_APP_DOMAIN}`;
+export const SHORT_DOMAIN = process.env.NEXT_PUBLIC_SHORT_DOMAIN;
 export const GOOGLE_FAVICON_URL =
   "https://www.google.com/s2/favicons?sz=64&domain_url=";
 export const DICEBEAR_AVATAR_URL =

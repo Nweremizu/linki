@@ -1,123 +1,39 @@
-import { withAuth } from "next-auth/middleware";
-import { getToken } from "next-auth/jwt";
-import { NextResponse } from "next/server";
-import { getUserViaToken } from "./lib/utils/getUserViaToken";
-import { getdefaultWorkspace } from "./lib/query/fetch-default-workspace";
+// import { withAuth } from "next-auth/middleware";
+import { parse } from "./lib/middleware/parse";
+import { APP_HOSTNAMES, DEFAULT_REDIRECTS } from "./lib/domain-constants";
+import AppMiddleware from "./lib/middleware/app";
+import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
+import LinkMiddleware from "./lib/middleware/link";
 
-export default withAuth(
-  async function middleware(req) {
-    const { pathname } = req.nextUrl;
-    const searchParams = req.nextUrl.searchParams.toString();
-    const searchParamsString =
-      searchParams.length > 0 ? `?${searchParams}` : "";
-    const fullPath = `${pathname}${searchParamsString}`;
-    const user = await getUserViaToken(req);
-    console.debug(pathname);
-    if (pathname === "/") {
-      return NextResponse.next();
-    }
+// export default withAuth(
+export default async function middleware(req: NextRequest, ev: NextFetchEvent) {
+  const { domain, key } = parse(req) as {
+    domain: string;
+    key: keyof typeof DEFAULT_REDIRECTS;
+  };
+  // console.log(domain);
 
-    if (
-      !user &&
-      pathname !== "/login" &&
-      pathname !== "/register" &&
-      !pathname.startsWith("/auth/reset-password/")
-    ) {
-      console.log(user);
-      return NextResponse.redirect(
-        new URL(
-          `/login${
-            pathname === "/" ? "" : `?next=${encodeURIComponent(fullPath)}`
-          }`,
-          req.url
-        )
-      );
-    } else if (user) {
-      if (
-        user &&
-        user.createdAt &&
-        new Date(user.createdAt).getTime() > Date.now() - 10000 &&
-        pathname !== "/welcome"
-      ) {
-        return NextResponse.redirect(new URL("/welcome", req.url));
-      } else if (
-        [
-          "/dashboard",
-          "/app",
-          "/login",
-          "/register",
-          "/analytics",
-          "/events",
-          "/integrations",
-          "/domains",
-          "/settings",
-        ].includes(pathname) ||
-        pathname.startsWith("/integrations/") ||
-        pathname.startsWith("/settings/")
-      ) {
-        const { defaultWorkspace } = await getdefaultWorkspace(
-          user.id,
-          user.accessToken
-        );
-
-        const defaultWorkspaceSlug = defaultWorkspace
-          ? defaultWorkspace
-          : user?.defaultWorkspace;
-
-        if (defaultWorkspaceSlug) {
-          let redirectPath = pathname;
-          if (
-            ["/login", "/register", "/app", "/dashboard"].includes(pathname)
-          ) {
-            redirectPath = "";
-          } else if (
-            pathname === "/integrations" ||
-            pathname.startsWith("/integrations/")
-          ) {
-            redirectPath = `/settings/${pathname}`;
-          }
-          return NextResponse.redirect(
-            new URL(
-              `/app/${defaultWorkspaceSlug}${redirectPath}${searchParamsString}`,
-              req.url
-            )
-          );
-        } else {
-          return NextResponse.redirect(new URL("/app/workspaces", req.url));
-        }
-      }
-    }
-
-    const token = await getToken({
-      req,
-      secret: process.env.NEXTAUTH_SECRET,
-    });
-
-    if (token && Date.now() >= token.data.validity.refresh_until * 1000) {
-      // if the access token is expired, redirect to the login page
-      const response = NextResponse.redirect(new URL("/login", req.url));
-      // Clear the session cookies
-      response.cookies.set("next-auth.session-token", "", { maxAge: 0 });
-      response.cookies.set("next-auth.csrf-token", "", { maxAge: 0 });
-      return response;
-    }
-    // If the user is authenticated, return the next response
-    return NextResponse.next();
-  },
-  {
-    callbacks: {
-      authorized: ({ token }) => {
-        return !!token;
-      },
-    },
-    pages: {
-      signIn: "/login",
-      error: "/login",
-    },
+  if (APP_HOSTNAMES.has(domain)) {
+    return AppMiddleware(req);
   }
-);
 
-// Authenticate all routes except for /api, /_next/static, /_next/image, .png files and / (root) paths
+  if (domain === "linki.sh" && DEFAULT_REDIRECTS[key]) {
+    return NextResponse.redirect(DEFAULT_REDIRECTS[key]);
+  }
+
+  return LinkMiddleware(req, ev);
+}
+// {
+//   callbacks: {
+//     authorized: ({ token }) => !!token,
+//   },
+//   pages: {
+//     signIn: "/login",
+//     error: "/login",
+//   },
+// }
+// );
+
 export const config = {
   unstable_allowDynamics: ["/lib/query/fetch-default-workspace.tsx"],
   matcher: [
