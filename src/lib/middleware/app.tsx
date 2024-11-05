@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { parse } from "./parse";
 import { getUserViaToken } from "../utils/getUserViaToken";
-import { getToken } from "next-auth/jwt";
+// import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
 import { getdefaultWorkspace } from "../query/fetch-default-workspace";
 
@@ -75,13 +75,13 @@ export default async function AppMiddleware(req: NextRequest) {
     }
   }
 
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-  if (token && Date.now() >= token.data.validity.refresh_until * 1000) {
-    const response = NextResponse.redirect(new URL("/login", req.url));
-    response.cookies.set("next-auth.session-token", "", { maxAge: 0 });
-    response.cookies.set("next-auth.csrf-token", "", { maxAge: 0 });
-    return response;
-  }
+  // const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  // if (token && Date.now() >= token.data.validity.refresh_until * 1000) {
+  //   const response = NextResponse.redirect(new URL("/login", req.url));
+  //   response.cookies.set("next-auth.session-token", "", { maxAge: 0 });
+  //   response.cookies.set("next-auth.csrf-token", "", { maxAge: 0 });
+  //   return response;
+  // }
 
   return NextResponse.next();
 }
