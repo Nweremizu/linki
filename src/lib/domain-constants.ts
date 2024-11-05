@@ -7,6 +7,7 @@ export const APP_DOMAIN =
 
 export const APP_HOSTNAMES = new Set([
   `app.${process.env.NEXT_PUBLIC_APP_DOMAIN}`,
+  "linki-theta.vercel.app",
   `preview.${process.env.NEXT_PUBLIC_APP_DOMAIN}`,
   "localhost:3000",
   "localhost",
