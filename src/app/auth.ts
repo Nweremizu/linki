@@ -17,7 +17,8 @@ const authOptions: NextAuthOptions = {
       async authorize(credentials, _req) {
         try {
           const axiosResponse = await axios.post(
-            "http://localhost:4000/auth/login",
+            // "http://localhost:4000/auth/login"
+            "https://linki-api-fnol.onrender.com/auth/login",
             {
               email: credentials?.email,
               password: credentials?.password,
@@ -29,11 +30,9 @@ const authOptions: NextAuthOptions = {
             }
           );
 
-
           // console.debug(axiosResponse.data);
 
           const user = axiosResponse.data?.responseObject;
-
 
           const tokens: BackendJWT = {
             accessToken: user.accessToken,

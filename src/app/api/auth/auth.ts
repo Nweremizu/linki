@@ -6,11 +6,16 @@ export const register = async (data: {
   password: string;
 }) => {
   try {
-    const res = await axios.post("http://localhost:4000/auth/register", data, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const res = await axios.post(
+      // "http://localhost:4000/auth/register"
+      "https://linki-api-fnol.onrender.com/auth/register",
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     return res.data;
   } catch (error: any) {
     throw new Error(error.response.data.message);
