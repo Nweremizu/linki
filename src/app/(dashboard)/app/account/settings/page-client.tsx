@@ -226,6 +226,7 @@ export const SettingsCard = ({
     {children}
     <div
       className={cn(
+        "flex w-full justify-end",
         "p-6 mt-4 bg-gray-50 border-t border-gray-200 rounded-b-lg text-end",
         isDelete && "bg-red-100 border-red-200"
       )}
@@ -234,9 +235,10 @@ export const SettingsCard = ({
         onClick={buttonFn}
         disabled={saving || (!isChanged && !isDelete)}
         className={cn(
-          "bg-gray-950 flex gap-2 text-white rounded-lg px-4 py-2 text-sm font-semibold",
+          "bg-gray-950 flex gap-2 items-center text-white rounded-lg px-4 py-2 text-sm font-semibold self-end",
           isDelete && "bg-red-600",
-          !isChanged && !isDelete && "opacity-50 cursor-not-allowed"
+          ((!isChanged && !isDelete) || saving) &&
+            "opacity-50 cursor-not-allowed"
         )}
       >
         {saving && <LoadingSpinner className="size-4" />}
