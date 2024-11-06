@@ -1,6 +1,7 @@
 "use client";
 
 import { useDeleteAccountModal } from "@/components/common/modal/delete-user-account-modal";
+import { LoadingSpinner } from "@/components/ui/icons";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -233,11 +234,12 @@ export const SettingsCard = ({
         onClick={buttonFn}
         disabled={saving || (!isChanged && !isDelete)}
         className={cn(
-          "bg-gray-950 text-white rounded-lg px-4 py-2 text-sm font-semibold",
+          "bg-gray-950 flex gap-2 text-white rounded-lg px-4 py-2 text-sm font-semibold",
           isDelete && "bg-red-600",
           !isChanged && !isDelete && "opacity-50 cursor-not-allowed"
         )}
       >
+        {saving && <LoadingSpinner className="size-4" />}
         {buttonText}
       </button>
     </div>
