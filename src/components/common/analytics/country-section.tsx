@@ -104,7 +104,7 @@ const AnalyticsLoader = () => {
 
 export const AnalyticsError = () => {
   return (
-    <div className="flex h-[300px] items-center justify-center">
+    <div className="flex h-[300px] w-full items-center justify-center">
       <p className="text-gray-500">Error fetching data</p>
     </div>
   );

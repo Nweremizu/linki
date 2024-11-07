@@ -8,7 +8,7 @@ export const register = async (data: {
   try {
     const res = await axios.post(
       // "http://localhost:4000/auth/register"
-      "https://linki-api-fnol.onrender.com/auth/register",
+      `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
       data,
       {
         headers: {

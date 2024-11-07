@@ -5,7 +5,7 @@ export const parse = (req: NextRequest) => {
   let domain = req.headers.get("host") as string;
   // remove www. from domain and convert to lowercase
   domain = domain.replace("www.", "").toLowerCase();
-  if (domain === "linki.localhost:3000") {
+  if (domain === "linki.localhost:3000" || domain.startsWith("linkico")) {
     // for local development and preview URLs
     domain = SHORT_DOMAIN ?? "";
   }

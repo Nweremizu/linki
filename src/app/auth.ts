@@ -18,7 +18,7 @@ const authOptions: NextAuthOptions = {
         try {
           const axiosResponse = await axios.post(
             // "http://localhost:4000/auth/login"
-            "https://linki-api-fnol.onrender.com/auth/login",
+            `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
             {
               email: credentials?.email,
               password: credentials?.password,

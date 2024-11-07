@@ -1,6 +1,6 @@
 import SettingsLayout from "@/components/common/settings-layout";
 import { Gear2 } from "@/components/ui/icons/gear2";
-import { LibraryBigIcon, Users } from "lucide-react";
+import { LibraryBigIcon, PuzzleIcon, Users } from "lucide-react";
 import { ReactNode } from "react";
 
 interface PersonalSettingsLayoutProps {
@@ -28,6 +28,11 @@ export default function PersonalSettingsLayout({
           name: "People",
           icon: <Users className="size-5" />,
           segment: "people",
+        },
+        {
+          name: "Integrations",
+          icon: <PuzzleIcon className="size-5" />,
+          segment: "integrations",
         },
       ],
     },

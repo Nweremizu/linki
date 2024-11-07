@@ -15,12 +15,13 @@ import { NumberTooltip } from "@/components/common/tooltips";
 import { CountingNumbers } from "@/components/common/counting-numbers";
 import { useTinyBirdData } from "@/lib/query/useAnalytics";
 import { LoadingSpinner } from "@/components/ui/icons";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { AnalyticsError } from "./country-section";
 
 export default function MainAnalytics() {
   const { queryParams } = useRouterStuff();
   const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
   const [totalD, setTotal] = useState(0);
 
   const tabs = [
@@ -32,6 +33,7 @@ export default function MainAnalytics() {
   ];
 
   const tab = tabs[0];
+  console.log(isError);
   return (
     <div className="w-full overflow-hidden border border-gray-200 bg-white sm:rounded-xl">
       <div className="flex justify-between overflow-x-scroll border-b border-gray-200">
@@ -90,7 +92,7 @@ export default function MainAnalytics() {
                     <span>{label}</span>
                   </div>
                   <div className="mt-1 flex">
-                    {total === 0 || !isLoading ? (
+                    {total === 0 || !isLoading || !isError ? (
                       <NumberTooltip value={total} unit={label.toLowerCase()}>
                         <CountingNumbers
                           as="h1"
@@ -112,7 +114,11 @@ export default function MainAnalytics() {
         </div>
       </div>
       <div className="p-1 pt-10 sm:p-4">
-        <MainChart setIsLoading={setIsLoading} setTotal={setTotal} />
+        <MainChart
+          setIsLoading={setIsLoading}
+          setTotal={setTotal}
+          setIsError={setIsError}
+        />
       </div>
     </div>
   );
@@ -121,9 +127,11 @@ export default function MainAnalytics() {
 function MainChart({
   setIsLoading,
   setTotal,
+  setIsError,
 }: {
   setIsLoading: Dispatch<SetStateAction<boolean>>;
   setTotal: Dispatch<SetStateAction<number>>;
+  setIsError: Dispatch<SetStateAction<boolean>>;
 }) {
   const { data, isLoading, isError } = useTinyBirdData();
 
@@ -136,6 +144,11 @@ function MainChart({
   startDate.setDate(endDate.getDate() - 3); // 4 days span including today
   endDate.setDate(new Date().getDate() + 4);
 
+  useEffect(() => {
+    if (isError) {
+      setIsError(true);
+    }
+  }, [isError, setIsError]);
   // Format dates to "YYYY-MM-DD" format for consistency
   const formattedStartDate = startDate.toISOString().split("T")[0];
   const formattedEndDate = endDate.toISOString().split("T")[0];
