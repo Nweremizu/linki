@@ -10,6 +10,7 @@ interface Tab {
   name: string;
   icon: ReactNode; // Type for components passed as icons
   segment?: string | null;
+  isStillInDevelopment?: boolean;
 }
 
 interface SettingsLayoutProps {
@@ -53,6 +54,7 @@ const SettingsLayout: React.FC<SettingsLayoutProps> = ({
                   key={index}
                   segment={tab.segment ?? null}
                   icon={tab.icon}
+                  isStillInDevelopment={tab.isStillInDevelopment}
                 >
                   {tab.name}
                 </NavLink>

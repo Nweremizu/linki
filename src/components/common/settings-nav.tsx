@@ -10,9 +10,15 @@ interface NavLinkProps {
   segment: string | null;
   icon: ReactNode; // Update type to ReactNode
   children: ReactNode;
+  isStillInDevelopment?: boolean;
 }
 
-const NavLink: React.FC<NavLinkProps> = ({ segment, icon, children }) => {
+const NavLink: React.FC<NavLinkProps> = ({
+  segment,
+  icon,
+  children,
+  isStillInDevelopment,
+}) => {
   const selectedLayoutSegment = useSelectedLayoutSegment();
   const { slug } = useParams() as { slug?: string };
 
@@ -23,13 +29,15 @@ const NavLink: React.FC<NavLinkProps> = ({ segment, icon, children }) => {
 
   return (
     <Link
-      href={href}
+      href={isStillInDevelopment ? "#" : href}
       className={cn(
         "flex items-center gap-2.5 whitespace-nowrap rounded-lg p-2 text-sm text-gray-950 outline-none transition-all duration-75",
         "ring-black/50 focus-visible:ring-2",
         isSelected
           ? "bg-gray-950/5"
-          : "hover:bg-gray-950/5 active:bg-gray-950/10"
+          : "hover:bg-gray-950/5 active:bg-gray-950/10",
+        isStillInDevelopment &&
+          "cursor-not-allowed bg-gray-400/5 hover:bg-gray-400/5"
       )}
     >
       {icon && icon} {/* Render the icon directly */}

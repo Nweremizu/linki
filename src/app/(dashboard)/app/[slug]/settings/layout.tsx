@@ -33,6 +33,7 @@ export default function PersonalSettingsLayout({
           name: "Integrations",
           icon: <PuzzleIcon className="size-5" />,
           segment: "integrations",
+          isStillInDevelopment: true,
         },
       ],
     },
