@@ -58,6 +58,13 @@ const authOptions: NextAuthOptions = {
             return null;
           }
         } catch (ex) {
+          // check if the error is an AxiosError like a network or a server not found error
+          if ((ex as AxiosError).code === "ECONNREFUSED") {
+            return {
+              error: "It seems the server is down. Please try again later.",
+            } as unknown as User;
+          }
+
           return {
             error: (ex as AxiosError<{ message: string }>).response?.data
               ?.message,
@@ -76,6 +83,7 @@ const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ user }: { user: User | AdapterUser }) {
       if (user?.error) {
+        console.log(user?.error);
         throw new Error(user?.error);
       }
 

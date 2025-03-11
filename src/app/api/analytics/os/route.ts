@@ -25,7 +25,7 @@ export async function GET(
   try {
     const response = await fetch(url.toString(), {
       headers: {
-        Authorization: `Bearer ${process.env.TINYBIRD_API_OS_KEY as string}`,
+        Authorization: `Bearer ${process.env.TINYBIRD_API_KEY as string}`,
       },
     });
 
@@ -34,7 +34,7 @@ export async function GET(
     }
 
     const result = await response.json();
-    console.log(result);
+    // console.log(result);
     return NextResponse.json(result.data);
   } catch (error) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

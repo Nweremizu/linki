@@ -132,19 +132,22 @@ export default function TagsSection({
   };
 
   return (
-    <div className="border-b border-gray-200 pb-4">
+    <div className="">
+      <h2 className="text-sm font-medium text-gray-900 mb-2">Tags</h2>
       <Command
         ref={commandRef}
         className="relative"
         loop
-        filter={(value, search) => (value.includes(search.trim()) ? 1 : 0)}>
+        filter={(value, search) => (value.includes(search.trim()) ? 1 : 0)}
+      >
         <div className="group rounded-md border border-gray-300 bg-white p-1  focus-within:border-gray-500 focus-within:ring-1 focus-within:ring-gray-500">
           <div className="absolute inset-y-0 left-0 flex items-center justify-center pl-3 text-gray-400">
             {creatingTag ? (
               <LoadingCircle className="h-4 w-4" />
             ) : (
               <NormalTooltip
-                content={`Tags help you organize your links in your ${process.env.NEXT_PUBLIC_APP_NAME} workspace.`}>
+                content={`Tags help you organize your links in your ${process.env.NEXT_PUBLIC_APP_NAME} workspace.`}
+              >
                 <Tag className="h-4 w-4" />
               </NormalTooltip>
             )}
@@ -161,7 +164,8 @@ export default function TagsSection({
                   setData({ ...data, tags: [] });
                   setInputValue("");
                 }}
-                className="absolute inset-y-0 right-0 my-auto text-gray-400 hover:text-gray-500">
+                className="absolute inset-y-0 right-0 my-auto text-gray-400 hover:text-gray-500"
+              >
                 <X className="h-7 w-7 pr-3" />
               </button>
             ) : (
@@ -181,7 +185,8 @@ export default function TagsSection({
                 <button
                   type="button"
                   onClick={() => createTag(inputValue)}
-                  className="flex w-full cursor-pointer items-center rounded-md bg-gray-100 px-4 py-2 text-sm text-gray-900 hover:text-gray-900 aria-selected:bg-gray-100 aria-selected:text-gray-900">
+                  className="flex w-full cursor-pointer items-center rounded-md bg-gray-100 px-4 py-2 text-sm text-gray-900 hover:text-gray-900 aria-selected:bg-gray-100 aria-selected:text-gray-900"
+                >
                   Create tag{" "}
                   <span className="ml-1.5 rounded-md bg-gray-200 px-2 py-0.5 text-gray-800">
                     {inputValue}
@@ -205,7 +210,8 @@ export default function TagsSection({
                   });
                   setInputValue("");
                 }}
-                className="group flex cursor-pointer items-center justify-between rounded-md px-4 py-2 text-sm text-gray-900 hover:bg-gray-100 hover:text-gray-900 active:bg-gray-200 aria-selected:bg-gray-100 aria-selected:text-gray-900">
+                className="group flex cursor-pointer items-center justify-between rounded-md px-4 py-2 text-sm text-gray-900 hover:bg-gray-100 hover:text-gray-900 active:bg-gray-200 aria-selected:bg-gray-100 aria-selected:text-gray-900"
+              >
                 <TagBadge {...tag} />
                 {tags.map(({ id }) => id).includes(tag.id) && (
                   <Check className="h-5 w-5 text-gray-500" />
@@ -218,7 +224,8 @@ export default function TagsSection({
                 key="create-tag"
                 value={inputValue}
                 onSelect={(tag) => createTag(tag)}
-                className="group flex cursor-pointer items-center justify-between rounded-md px-4 py-2 text-sm text-gray-900 hover:bg-gray-100 hover:text-gray-900 active:bg-gray-200 aria-selected:bg-gray-100 aria-selected:text-gray-900">
+                className="group flex cursor-pointer items-center justify-between rounded-md px-4 py-2 text-sm text-gray-900 hover:bg-gray-100 hover:text-gray-900 active:bg-gray-200 aria-selected:bg-gray-100 aria-selected:text-gray-900"
+              >
                 <div className="flex items-center">
                   Create tag{" "}
                   <span className="ml-1.5 rounded-md bg-gray-200 px-2 py-0.5 text-gray-800">

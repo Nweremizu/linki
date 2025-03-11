@@ -64,7 +64,7 @@ const buildClickData = async ({
 const sendClickData = async (clickData: any) => {
   try {
     const response = await fetch(
-      `${process.env.TINYBIRD_API_URL}/v0/events?name=linki_click_event&wait=true`,
+      `${process.env.TINYBIRD_API_URL}/v0/events?name=click_event&wait=true`,
       {
         method: "POST",
         headers: {

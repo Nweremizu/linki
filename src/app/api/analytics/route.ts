@@ -15,7 +15,7 @@ export async function GET(req: NextRequest, res: NextApiResponse<Data>) {
   }
 
   const url = new URL(
-    `https://api.us-east.tinybird.co/v0/pipes/v1_main_links.json?workId=${workspaceId}`
+    `https://api.us-east.tinybird.co/v0/pipes/click_event_pipe.json?workId=${workspaceId}`
   );
 
   try {
