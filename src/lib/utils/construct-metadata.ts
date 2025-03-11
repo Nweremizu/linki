@@ -21,6 +21,8 @@ export function constructMetadata({
     description,
     openGraph: {
       title,
+      siteName: process.env.NEXT_PUBLIC_APP_NAME,
+      url: `https://${process.env.NEXT_PUBLIC_APP_DOMAIN}`,
       description,
       ...(image && {
         images: image,
