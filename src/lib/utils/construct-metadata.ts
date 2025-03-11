@@ -4,7 +4,7 @@ import { HOME_DOMAIN } from "../constants";
 export function constructMetadata({
   title = `${process.env.NEXT_PUBLIC_APP_NAME} - Link Management for Modern Teams`,
   description = `${process.env.NEXT_PUBLIC_APP_NAME} is the open-source link management platform for modern teams to create marketing campaigns, link sharing features, and referral programs.`,
-  image = "./thumbnail.png",
+  image = "./assets/thumbnail.png",
   video,
   canonicalUrl,
   noIndex = false,
